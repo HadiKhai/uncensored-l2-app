@@ -24,7 +24,6 @@ function PureMessages({
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
 
-  console.log('Messages', messages);
   return (
     <div
       ref={messagesContainerRef}

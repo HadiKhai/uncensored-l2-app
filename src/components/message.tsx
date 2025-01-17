@@ -20,7 +20,6 @@ const PurePreviewMessage = ({
 }) => {
 
     const { writeContractAsync } = useWriteContract()
-    console.log('PreviewMessage', message);
   return (
     <AnimatePresence>
       <motion.div
@@ -79,7 +78,6 @@ const PurePreviewMessage = ({
                             result[5]
                         ]
 
-                      console.log(transactionArgs)
                     return (
                       <div key={toolCallId}>
                         {toolName === "swapEthL2" ? (

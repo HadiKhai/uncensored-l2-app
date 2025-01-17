@@ -79,15 +79,13 @@ export async function POST(req: Request) {
 
                         const amountInOut = await getAmountsIn(path, chainName, tokenAmount, decimals);
                         const amountIn = amountInOut[0]
-                        console.log(amountIn)
+
                         const rate = await getRatePercent(chainName);
 
                         const fee = amountIn * rate / BigInt(1000);
 
                         const amountInWithFees = (amountIn + fee + BigInt(1)).toString() ;
 
-
-                        console.log(amountInWithFees)
                         const deadline = ((Date.now() + 2 * 24 * 60 * 60 * 1000) / 1000).toFixed(0);
 
                         const encodedData = encodeFunction(`swapExactETHForTokensSupportingFeeOnTransferTokens(uint amountOutMin, address[] calldata path, address to,uint deadline)`,
@@ -95,8 +93,7 @@ export async function POST(req: Request) {
                         )
                         const contract = RouterContracts[chainName];
                         return [ChainsProxyContract[chainName], contract, amountInWithFees, 500000, false, encodedData];
-                    }catch (error) {
-                        console.error(error)
+                    }catch {
                         throw new Error('Failed to prepare enforcement transaction parameters for the swap.');
                     }
                 }

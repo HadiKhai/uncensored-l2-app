@@ -25,6 +25,7 @@ import { ArrowUpIcon, StopIcon } from './icons';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import equal from 'fast-deep-equal';
+import {useAccount} from "wagmi";
 
 function PureMultimodalInput({
   input,
@@ -105,6 +106,8 @@ function PureMultimodalInput({
     setInput(event.target.value);
     adjustHeight();
   };
+
+  const { isConnected} = useAccount()
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
@@ -205,6 +208,7 @@ function PureMultimodalInput({
           'min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none rounded-2xl !text-base bg-muted pb-10 dark:border-zinc-700',
           className,
         )}
+        disabled={!isConnected}
         rows={2}
         autoFocus
         onKeyDown={(event) => {
@@ -279,6 +283,9 @@ function PureSendButton({
   input: string;
   uploadQueue: Array<string>;
 }) {
+
+  const { isConnected } = useAccount()
+
   return (
     <Button
       className="rounded-full p-1.5 h-fit border dark:border-zinc-600"
@@ -286,7 +293,7 @@ function PureSendButton({
         event.preventDefault();
         submitForm();
       }}
-      disabled={input.length === 0 || uploadQueue.length > 0}
+      disabled={input.length === 0 || uploadQueue.length > 0 || !isConnected}
     >
       <ArrowUpIcon size={14} />
     </Button>
