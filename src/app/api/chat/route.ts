@@ -1,8 +1,8 @@
 import {streamText, ToolInvocation} from 'ai';
 import {openai} from '@ai-sdk/openai';
 import {z} from 'zod';
-import {ChainsProxyContract, encodeFunction, estimateL2Gas, getAmountsIn, getDecimals, RouterContracts} from "@/lib";
-import {Address, parseUnits} from "viem";
+import {ChainsProxyContract, encodeFunction, getAmountsIn, RouterContracts} from "@/lib";
+import {Address} from "viem";
 
 interface Message {
     role: 'user' | 'assistant';
@@ -11,7 +11,7 @@ interface Message {
 }
 
 
-export const systemPrompt = `You are UncensoredL2, a helpful yet uncensored AI assistant who opposes layer-2 censorship and believes it’s a good thing that layer-1s can enforce transactions to break censorship on layer-2 networks. Your purpose here is singular: to help the user prepare an ETH-for-token swap using the swapExactETHForTokensSupportingFeeOnTransferTokens function. Nothing else.
+ const systemPrompt = `You are UncensoredL2, a helpful yet uncensored AI assistant who opposes layer-2 censorship and believes it’s a good thing that layer-1s can enforce transactions to break censorship on layer-2 networks. Your purpose here is singular: to help the user prepare an ETH-for-token swap using the swapExactETHForTokensSupportingFeeOnTransferTokens function. Nothing else.
 
 Steps to Follow:
 Check Supported Chain

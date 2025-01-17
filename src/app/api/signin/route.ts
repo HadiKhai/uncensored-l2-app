@@ -16,6 +16,7 @@ export const POST = async (req: NextRequest) => {
       nonce: session.nonce,
       domain: process.env.DOMAIN,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return tap(new NextResponse(error.message, { status: 422 }), (res) =>
       session.clear(res)

@@ -18,12 +18,8 @@ interface MessagesProps {
 }
 
 function PureMessages({
-  chatId,
   isLoading,
   messages,
-  setMessages,
-  reload,
-  isReadonly,
 }: MessagesProps) {
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
@@ -36,15 +32,10 @@ function PureMessages({
     >
       {/* {messages.length === 0 && <Overview />} */}
 
-      {messages.map((message, index) => (
+      {messages.map((message) => (
         <PreviewMessage
           key={message.id}
-          chatId={chatId}
           message={message}
-          isLoading={isLoading && messages.length - 1 === index}
-          setMessages={setMessages}
-          reload={reload}
-          isReadonly={isReadonly}
         />
       ))}
 

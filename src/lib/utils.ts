@@ -5,9 +5,8 @@ import {
     Address,
     encodeFunctionData,
     erc20Abi,
-    formatUnits, parseAbi,
+    parseAbi,
     parseAbiItem,
-    parseEther,
     parseUnits
 } from "viem";
 import { createPublicClient, http } from 'viem';
@@ -142,17 +141,17 @@ export const getAmountsIn = async (path: Address[], chainName: keyof typeof Chai
 
 }
 
-export const estimateL2Gas = async ( chainName: keyof typeof ChainsProxyContract,args:  [bigint, readonly `0x${string}`[], `0x${string}`, bigint]) => {
-    // const result = await clients[chainName].estimateContractGas({
-    //     abi: parseAbi([`function swapExactETHForTokensSupportingFeeOnTransferTokens(uint amountOutMin, address[] calldata path, address to,uint deadline)`]),
-    //     address: RouterContracts[chainName],
-    //     args: args,
-    //     functionName: 'swapExactETHForTokensSupportingFeeOnTransferTokens',
-    // })
-
-    const result = await clients[chainName].estimateGas({
-
-    })
-
-    return result
-}
+// export const estimateL2Gas = async ( chainName: keyof typeof ChainsProxyContract,args:  [bigint, readonly `0x${string}`[], `0x${string}`, bigint]) => {
+//     // const result = await clients[chainName].estimateContractGas({
+//     //     abi: parseAbi([`function swapExactETHForTokensSupportingFeeOnTransferTokens(uint amountOutMin, address[] calldata path, address to,uint deadline)`]),
+//     //     address: RouterContracts[chainName],
+//     //     args: args,
+//     //     functionName: 'swapExactETHForTokensSupportingFeeOnTransferTokens',
+//     // })
+//
+//     const result = await clients[chainName].estimateGas({
+//
+//     })
+//
+//     return result
+// }

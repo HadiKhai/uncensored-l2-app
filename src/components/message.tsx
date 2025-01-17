@@ -1,9 +1,9 @@
 'use client';
 
-import type { ChatRequestOptions, Message } from 'ai';
+import type { Message } from 'ai';
 import cx from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 import equal from 'fast-deep-equal';
 import { cn } from '@/lib/utils';
@@ -11,26 +11,12 @@ import { SparklesIcon} from "@/components/icons";
 import Markdown from "react-markdown";
 import {Button} from "@/components/ui/button";
 import {useWriteContract} from "wagmi";
-import {Address, parseAbi, parseAbiItem, parseAbiParameters} from "viem";
+import {Address, parseAbi} from "viem";
 
 const PurePreviewMessage = ({
-  chatId,
   message,
-  isLoading,
-  setMessages,
-  reload,
-  isReadonly,
 }: {
-  chatId: string;
   message: Message;
-  isLoading: boolean;
-  setMessages: (
-    messages: Message[] | ((messages: Message[]) => Message[]),
-  ) => void;
-  reload: (
-    chatRequestOptions?: ChatRequestOptions,
-  ) => Promise<string | null | undefined>;
-  isReadonly: boolean;
 }) => {
 
     const { writeContractAsync } = useWriteContract()
@@ -143,7 +129,6 @@ const PurePreviewMessage = ({
 export const PreviewMessage = memo(
   PurePreviewMessage,
   (prevProps, nextProps) => {
-    if (prevProps.isLoading !== nextProps.isLoading) return false;
     if (prevProps.message.content !== nextProps.message.content) return false;
     if (
       !equal(

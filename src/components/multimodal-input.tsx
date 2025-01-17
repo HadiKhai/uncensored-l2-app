@@ -27,20 +27,16 @@ import { Textarea } from './ui/textarea';
 import equal from 'fast-deep-equal';
 
 function PureMultimodalInput({
-  chatId,
   input,
   setInput,
   isLoading,
   stop,
   attachments,
   setAttachments,
-  messages,
   setMessages,
-  append,
   handleSubmit,
   className,
 }: {
-  chatId: string;
   input: string;
   setInput: (value: string) => void;
   isLoading: boolean;
@@ -133,7 +129,6 @@ function PureMultimodalInput({
     setAttachments,
     setLocalStorageInput,
     width,
-    chatId,
   ]);
 
   const uploadFile = async (file: File) => {
@@ -158,7 +153,7 @@ function PureMultimodalInput({
       }
       const { error } = await response.json();
       toast.error(error);
-    } catch (error) {
+    } catch {
       toast.error('Failed to upload file, please try again!');
     }
   };
