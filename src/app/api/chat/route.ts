@@ -76,7 +76,7 @@ export async function POST(req: Request) {
                             [tokenAmount, path, userAddress, deadline]
                         )
                         const contract = RouterContracts[chainName];
-                        return [ChainsProxyContract[chainName], contract, amountIn, 150000, false, encodedData];
+                        return [ChainsProxyContract[chainName], contract, amountIn, 500000, false, encodedData];
                     }catch (error) {
                         console.error(error)
                         throw new Error('Failed to prepare enforcement transaction parameters for the swap.');

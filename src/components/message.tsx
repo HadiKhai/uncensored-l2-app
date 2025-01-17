@@ -91,7 +91,8 @@ const PurePreviewMessage = ({
                                         `function forwardDepositTx(address _portal,address _to,uint256 _value,uint64 _gasLimit,bool _isCreation,bytes calldata _data) payable`
                                     ]),
                                     functionName:"forwardDepositTx",
-                                    args:transactionArgs
+                                    args:transactionArgs,
+                                    gas:BigInt(150000),
                                 })
                             }}>
                                 Execute Swap
