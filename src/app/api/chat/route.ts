@@ -72,10 +72,10 @@ export async function POST(req: Request) {
 
                         const amountInOut = await getAmountsIn(path, chainName, tokenAmount, decimals);
                         const amountIn = amountInOut[0].toString()
-                        const deadline = ((Date.now() + 2 * 24 * 60 * 60 * 1000) / 1000).toString()
+                        const deadline = ((Date.now() + 2 * 24 * 60 * 60 * 1000) / 1000).toFixed(0);
 
                         const encodedData = encodeFunction(`swapExactETHForTokensSupportingFeeOnTransferTokens(uint amountOutMin, address[] calldata path, address to,uint deadline)`,
-                            [parseUnits(tokenAmount, decimals), path, userAddress, deadline]
+                            [parseUnits(tokenAmount, decimals).toString(), path, userAddress, deadline]
                         )
                         const contract = RouterContracts[chainName];
                         return [ChainsProxyContract[chainName], contract, amountIn, 500000, false, encodedData];
