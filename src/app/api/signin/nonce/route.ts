@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getJustaname, Session, tap } from '../../../../../lib';
+import {getJustaname, Session, tap} from "@/lib";
+// import { getJustaname, Session, tap } from '../../../../../lib';
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   const session = await Session.fromRequest(req);
