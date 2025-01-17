@@ -1,1 +1,0 @@
-export const COOKIE_NAME = 'justweb3-console-session'
