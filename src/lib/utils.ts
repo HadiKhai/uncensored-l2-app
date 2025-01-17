@@ -126,8 +126,7 @@ export const getDecimals = async (tokenAddress: Address, chainName: keyof typeof
     return result
 }
 
-export const getAmountsIn = async (path: Address[], chainName: keyof typeof ChainsProxyContract, amountOut: string) => {
-    const decimals = await getDecimals(path[path.length - 1], chainName);
+export const getAmountsIn = async (path: Address[], chainName: keyof typeof ChainsProxyContract, amountOut: string, decimals: number) => {
     const result = await clients[chainName].readContract({
         address: RouterContracts[chainName],
         abi:parseAbi([

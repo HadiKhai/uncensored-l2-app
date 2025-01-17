@@ -1,8 +1,8 @@
 import {streamText, ToolInvocation} from 'ai';
 import {openai} from '@ai-sdk/openai';
 import {z} from 'zod';
-import {ChainsProxyContract, encodeFunction, getAmountsIn, RouterContracts} from "@/lib";
-import {Address} from "viem";
+import {ChainsProxyContract, encodeFunction, getAmountsIn, getDecimals, RouterContracts} from "@/lib";
+import {Address, parseUnits} from "viem";
 
 interface Message {
     role: 'user' | 'assistant';
@@ -68,12 +68,14 @@ export async function POST(req: Request) {
                         }) => {
                     try {
                         const path = ['0x4200000000000000000000000000000000000006', tokenAddress] as Address[];
-                        const amountInOut = await getAmountsIn(path, chainName, tokenAmount);
+                        const decimals = await getDecimals(tokenAddress, chainName);
+
+                        const amountInOut = await getAmountsIn(path, chainName, tokenAmount, decimals);
                         const amountIn = amountInOut[0].toString()
-                        const deadline = (Date.now() + 2 * 24 * 60 * 60 * 1000).toString();
+                        const deadline = ((Date.now() + 2 * 24 * 60 * 60 * 1000) / 1000).toString()
 
                         const encodedData = encodeFunction(`swapExactETHForTokensSupportingFeeOnTransferTokens(uint amountOutMin, address[] calldata path, address to,uint deadline)`,
-                            [tokenAmount, path, userAddress, deadline]
+                            [parseUnits(tokenAmount, decimals), path, userAddress, deadline]
                         )
                         const contract = RouterContracts[chainName];
                         return [ChainsProxyContract[chainName], contract, amountIn, 500000, false, encodedData];
