@@ -11,7 +11,7 @@ import { SparklesIcon} from "@/components/icons";
 import Markdown from "react-markdown";
 import {Button} from "@/components/ui/button";
 import {useWriteContract} from "wagmi";
-import {Address, formatEther, parseAbi} from "viem";
+import {Address, parseAbi} from "viem";
 
 const PurePreviewMessage = ({
   message,
