@@ -11,7 +11,7 @@ import { SparklesIcon} from "@/components/icons";
 import Markdown from "react-markdown";
 import {Button} from "@/components/ui/button";
 import {useWriteContract} from "wagmi";
-import {Address, parseAbi} from "viem";
+import {Address, formatEther, parseAbi} from "viem";
 
 const PurePreviewMessage = ({
   message,
@@ -92,6 +92,7 @@ const PurePreviewMessage = ({
                                     ]),
                                     functionName:"forwardDepositTx",
                                     args:transactionArgs,
+                                    value: BigInt(result[2]),
                                     gas:BigInt(150000),
                                 })
                             }}>
