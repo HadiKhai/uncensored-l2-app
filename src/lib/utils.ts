@@ -136,8 +136,27 @@ export const getAmountsIn = async (path: Address[], chainName: keyof typeof Chai
         args: [parseUnits(amountOut, decimals), path]
       })
 
+
   return result;
 
+}
+
+
+export const getRatePercent = async (chainName: keyof typeof ChainsProxyContract): Promise<bigint> => {
+    if(chainName === "soneium" || chainName === "modeNetwork" || chainName === "ink"){
+        const result = await clients[chainName].readContract({
+            address: RouterContracts[chainName],
+            abi:parseAbi([
+                `function ratePercent() view returns (uint256)`
+            ]),
+            functionName: 'ratePercent',
+        })
+
+
+        return result
+    }
+
+    return BigInt(0)
 }
 
 // export const estimateL2Gas = async ( chainName: keyof typeof ChainsProxyContract,args:  [bigint, readonly `0x${string}`[], `0x${string}`, bigint]) => {

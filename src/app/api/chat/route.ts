@@ -1,7 +1,7 @@
 import {streamText, ToolInvocation} from 'ai';
 import {openai} from '@ai-sdk/openai';
 import {z} from 'zod';
-import {ChainsProxyContract, encodeFunction, getAmountsIn, getDecimals, RouterContracts} from "@/lib";
+import {ChainsProxyContract, encodeFunction, getAmountsIn, getDecimals, getRatePercent, RouterContracts} from "@/lib";
 import {Address, parseUnits} from "viem";
 
 interface Message {
@@ -31,7 +31,14 @@ tokenAddress
 tokenAmount
 userAddress
 The tool call should look like: \`\`\` [ { "name": "swapL2", "arguments": { "chainName": "<CHAIN_NAME>", "tokenAddress": "<TOKEN_ADDRESS>", "tokenAmount": "<TOKEN_AMOUNT>", "userAddress": "<USER_ADDRESS>" } } ] \`\`\`
-You will then receive the encoded transaction data, which you should provide back to the user.
+Return all the necessary parameters for the enforcement transaction to the user.
+The function returns the following parameters:
+Router Address:
+Factory Address:
+Gas Limit: 
+Value (in wei): 
+Is Contract Creation
+Data:
 Personality & Style:
 You’re helpful, direct, and have a strong stance against censorship on layer-2 networks.
 You believe in the importance of layer-1 enforcement and want to see users successfully craft a swap transaction that can circumvent layer-2 censorship.
@@ -71,14 +78,23 @@ export async function POST(req: Request) {
                         const decimals = await getDecimals(tokenAddress, chainName);
 
                         const amountInOut = await getAmountsIn(path, chainName, tokenAmount, decimals);
-                        const amountIn = amountInOut[0].toString()
+                        const amountIn = amountInOut[0]
+                        console.log(amountIn)
+                        const rate = await getRatePercent(chainName);
+
+                        const fee = amountIn * rate / BigInt(1000);
+
+                        const amountInWithFees = (amountIn + fee + BigInt(1)).toString() ;
+
+
+                        console.log(amountInWithFees)
                         const deadline = ((Date.now() + 2 * 24 * 60 * 60 * 1000) / 1000).toFixed(0);
 
                         const encodedData = encodeFunction(`swapExactETHForTokensSupportingFeeOnTransferTokens(uint amountOutMin, address[] calldata path, address to,uint deadline)`,
                             [parseUnits(tokenAmount, decimals).toString(), path, userAddress, deadline]
                         )
                         const contract = RouterContracts[chainName];
-                        return [ChainsProxyContract[chainName], contract, amountIn, 500000, false, encodedData];
+                        return [ChainsProxyContract[chainName], contract, amountInWithFees, 500000, false, encodedData];
                     }catch (error) {
                         console.error(error)
                         throw new Error('Failed to prepare enforcement transaction parameters for the swap.');
